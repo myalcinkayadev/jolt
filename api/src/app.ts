@@ -1,15 +1,10 @@
-import 'reflect-metadata';
+import 'core-js'
 
-import { loadEnv } from './env';
-import { CompositionRoot } from './ioc/compositionRoot';
+import { CompositionRoot } from './ioc/composition';
 import logger from './logger';
 
 async function main() {
-  loadEnv();
-
-  const { wss } = await CompositionRoot.register();
-
-  wss.listen();
+  await CompositionRoot.register();
 }
 
 main().catch((err) => {

@@ -1,25 +1,13 @@
 import { container } from 'tsyringe';
-import { InjectionToken } from './injectionToken';
+import { InjectionToken } from './token';
 
 import { connectMongodb } from '../infra/mongodb';
-import { WebsocketServer } from '../infra/ws/server';
-
-type CompositionRootRegisterResult = {
-  wss: WebsocketServer;
-};
 
 export class CompositionRoot {
-  static async register(): Promise<CompositionRootRegisterResult> {
+  static async register(): Promise<void> {
     await connectMongodb();
 
-    const wssPort = parseInt(process.env.WSS_PORT || '9000');
-    const wss = new WebsocketServer(wssPort);
-
     this.verify();
-
-    return {
-      wss,
-    };
   }
 
   private static verify(): void {

@@ -1,23 +1,16 @@
-FROM node:22-alpine
+FROM oven/bun:latest
 
-# Set working directory
 WORKDIR /app
 
-# Copy package.json and pnpm-lock.yaml
-COPY package.json pnpm-lock.yaml ./
+COPY package.json bun.lockb* ./
 
-# Install dependencies
-RUN pnpm install
+RUN bun install
 
-# Copy TypeScript configuration and source code
 COPY tsconfig.json ./
 COPY src/ ./src/
 
-# Build TypeScript code
-RUN pnpm build
+RUN bun build src/app/app.ts --outdir dist --target bun
 
-# Expose port (3000 as per your backend setup)
 EXPOSE 3000
 
-# Start the application
-CMD ["pnpm", "start"]
+CMD ["bun", "run", "dist/src/app.js"]
